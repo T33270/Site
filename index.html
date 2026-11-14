@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>? · Location de véhicules</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Agence de location de véhicules : citadines, SUV, utilitaires et berlines, à la journée ou au mois.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Mise en page : une colonne large et aérée, le logo et les prix repris en plaques d'immatriculation */
+:root {
+  --bg: #F3F5F7;
+  --surface: #FFFFFF;
+  --ink: #111A2B;
+  --muted: #5B6577;
+  --line: #DCE1E8;
+  --accent: #FFC629;      /* jaune plaque arrière */
+  --accent-ink: #111A2B;
+  --plate-blue: #1F3FA8;  /* bande européenne */
+  --plate-face: #FFFFFF;
+  --plate-ink: #111A2B;
+  --display: "Archivo", "Arial Narrow", Arial, sans-serif;
+  --body: "Figtree", "Segoe UI", Helvetica, Arial, sans-serif;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E131B; --surface: #161D28; --ink: #EEF1F5; --muted: #9AA5B5; --line: #283243;
+    --plate-face: #EEF1F5; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E131B; --surface: #161D28; --ink: #EEF1F5; --muted: #9AA5B5; --line: #283243;
+  --plate-face: #EEF1F5; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+img, svg { max-width: 100%; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--plate-blue); outline-offset: 3px; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+.wrap {
+  max-width: 1120px; margin-inline: auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--display); font-stretch: 112%; line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.3rem, 6.2vw, 4.3rem); font-weight: 800; }
+h2 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); font-weight: 750; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+p { margin: 0; }
+.lead { color: var(--muted); font-size: 1.15rem; max-width: 34em; }
+section { padding-block: clamp(56px, 9vw, 104px); }
+.section-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 40px; }
+.section-head p { color: var(--muted); max-width: 38em; }
+
+/* Plaque */
+.plate {
+  display: inline-flex; align-items: stretch; background: var(--plate-face); color: var(--plate-ink);
+  border: 2px solid var(--plate-ink); border-radius: 7px; overflow: hidden;
+  font-family: var(--display); font-weight: 800; font-stretch: 100%; line-height: 1; text-decoration: none;
+}
+.plate .band { background: var(--plate-blue); color: #fff; font-size: .55em; display: grid; place-items: center; padding: 0 .55em; letter-spacing: .04em; }
+.plate .num { padding: .28em .7em; letter-spacing: .06em; }
+.plate.rear { background: var(--accent); color: var(--accent-ink); border-color: var(--accent-ink); }
+
+/* En-tête */
+header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 22px; flex-wrap: wrap; }
+.brand { font-size: 1.5rem; }
+nav { display: flex; gap: 26px; align-items: center; flex-wrap: wrap; font-weight: 500; }
+nav a { text-decoration: none; color: var(--muted); }
+nav a:hover { color: var(--ink); }
+
+.btn {
+  display: inline-block; font: 600 1rem var(--body); text-decoration: none; cursor: pointer;
+  padding: 13px 22px; border-radius: 999px; border: 2px solid var(--ink); background: var(--ink); color: var(--bg);
+  transition: transform .15s ease;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn.ghost { background: transparent; color: var(--ink); }
+nav .btn { padding: 9px 18px; color: var(--bg); }
+
+/* Accueil */
+.hero { padding-block: clamp(40px, 7vw, 88px) clamp(56px, 9vw, 104px); }
+.hero .wrap { display: grid; grid-template-columns: 1.25fr .9fr; gap: clamp(32px, 6vw, 72px); align-items: center; }
+.hero-text { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.hero h1 mark { background: linear-gradient(transparent 62%, var(--accent) 62%); color: inherit; padding: 0 .06em; }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.quote { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.quote h2 { font-size: 1.25rem; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field label { font-size: .82rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
+.field select, .field input {
+  font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+  padding: 11px 12px; width: 100%; min-width: 0;
+}
+.dates { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.result { border-top: 1px dashed var(--line); padding-top: 16px; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.result .detail { color: var(--muted); font-size: .95rem; font-variant-numeric: tabular-nums; }
+.result .total { font: 800 1.9rem var(--display); font-variant-numeric: tabular-nums; }
+.note { color: var(--muted); font-size: .85rem; }
+
+/* Flotte */
+.fleet { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.car { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.car svg { width: 100%; height: auto; display: block; }
+.car svg .body { fill: var(--bg); stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; }
+.car svg .glass { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: .55; }
+.car svg .wheel { fill: var(--surface); stroke: var(--ink); stroke-width: 2.5; }
+.car svg .hub { fill: var(--ink); }
+.car svg .road { stroke: var(--line); stroke-width: 2; fill: none; }
+.car p { color: var(--muted); font-size: .95rem; flex: 1; }
+.car .plate { align-self: flex-start; font-size: .95rem; border-width: 1.5px; }
+
+/* Étapes */
+.band-section { background: var(--surface); border-block: 1px solid var(--line); }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; list-style: none; padding: 0; margin: 0; counter-reset: step; }
+.steps li { counter-increment: step; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.steps li::before { content: counter(step); font: 800 1rem var(--display); width: 2.2em; height: 2.2em; display: grid; place-items: center; border-radius: 50%; background: var(--accent); color: var(--accent-ink); }
+.steps p { color: var(--muted); }
+
+/* Questions */
+.faq { display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(28px, 6vw, 72px); }
+.faq .section-head { margin: 0; }
+details { border-bottom: 1px solid var(--line); padding-block: 18px; }
+details:first-of-type { border-top: 1px solid var(--line); }
+summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font: 600 1.3rem var(--display); line-height: 1; color: var(--muted); }
+details[open] summary::after { content: "–"; }
+details p { color: var(--muted); margin-top: 10px; max-width: 40em; }
+
+/* Contact */
+.contact { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.contact div { border-top: 2px solid var(--ink); padding-top: 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.contact .k { font-size: .82rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
+.contact .v { font-size: 1.1rem; font-weight: 600; overflow-wrap: anywhere; user-select: all; }
+.contact .s { color: var(--muted); font-size: .95rem; }
+
+footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding-block: 28px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+footer .plate { font-size: 1rem; }
+
+@media (max-width: 900px) {
+  .hero .wrap, .faq { grid-template-columns: 1fr; }
+  .fleet { grid-template-columns: repeat(2, 1fr); }
+  .steps, .contact { grid-template-columns: 1fr; gap: 28px; }
+}
+@media (max-width: 520px) {
+  .fleet { grid-template-columns: 1fr; }
+  nav a:not(.btn) { display: none; }
+}
+</style>
+
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="plate brand" href="#accueil" aria-label="? — accueil"><span class="band">F</span><span class="num">?</span></a>
+    <nav aria-label="Navigation principale">
+      <a href="#flotte">Flotte</a>
+      <a href="#etapes">Fonctionnement</a>
+      <a href="#questions">Questions</a>
+      <a class="btn" href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="accueil">
+  <div class="hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <h1>Le bon véhicule, <mark>au bon moment.</mark></h1>
+        <p class="lead">Citadines, SUV, utilitaires et berlines, à la journée, à la semaine ou au mois. Des tarifs clairs et une remise des clés en quelques minutes.</p>
+        <div class="actions">
+          <a class="btn" href="#flotte">Voir la flotte</a>
+          <a class="btn ghost" href="#contact">Nous contacter</a>
+        </div>
+      </div>
+
+      <form class="quote" id="devis" novalidate>
+        <h2>Estimer ma location</h2>
+        <div class="field">
+          <label for="categorie">Véhicule</label>
+          <select id="categorie">
+            <option value="29">Citadine</option>
+            <option value="49">SUV</option>
+            <option value="59">Utilitaire</option>
+            <option value="79">Berline</option>
+          </select>
+        </div>
+        <div class="dates">
+          <div class="field"><label for="depart">Départ</label><input type="date" id="depart"></div>
+          <div class="field"><label for="retour">Retour</label><input type="date" id="retour"></div>
+        </div>
+        <div class="result" aria-live="polite">
+          <span class="detail" id="detail"></span>
+          <span class="total" id="total"></span>
+        </div>
+        <p class="note">Tarif indicatif. Contactez l'agence pour confirmer la disponibilité.</p>
+      </form>
+    </div>
+  </div>
+
+  <section id="flotte">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>La flotte</h2>
+        <p>Quatre catégories pour couvrir tous les trajets, du rendez-vous en ville au déménagement.</p>
+      </div>
+      <div class="fleet">
+        <article class="car">
+          <svg viewBox="0 0 200 76" role="img" aria-label="Silhouette de citadine">
+            <path class="road" d="M4 70H196"/>
+            <path class="body" d="M22 58V46q2-8 16-10l22-14q6-4 18-4h34q12 0 22 8l16 12 20 4q10 2 10 10v6z"/>
+            <path class="glass" d="M66 36l14-10h30q8 0 16 6l6 4z"/>
+            <circle class="wheel" cx="58" cy="58" r="11"/><circle class="hub" cx="58" cy="58" r="3"/>
+            <circle class="wheel" cx="146" cy="58" r="11"/><circle class="hub" cx="146" cy="58" r="3"/>
+          </svg>
+          <h3>Citadine</h3>
+          <p>Compacte et sobre, idéale en ville. 4 places, petit coffre.</p>
+          <span class="plate rear"><span class="num">dès 29 € / jour</span></span>
+        </article>
+        <article class="car">
+          <svg viewBox="0 0 200 76" role="img" aria-label="Silhouette de SUV">
+            <path class="road" d="M4 70H196"/>
+            <path class="body" d="M12 58V34q0-6 8-8l22-16q4-2 12-2h76q8 0 14 6l16 16 20 4q8 2 8 10v14z"/>
+            <path class="glass" d="M40 30l12-12h34v12zM94 18h34q4 0 8 4l8 8H94z"/>
+            <circle class="wheel" cx="52" cy="58" r="12"/><circle class="hub" cx="52" cy="58" r="3"/>
+            <circle class="wheel" cx="150" cy="58" r="12"/><circle class="hub" cx="150" cy="58" r="3"/>
+          </svg>
+          <h3>SUV</h3>
+          <p>Confort et espace pour la famille et les longs trajets. 5 places.</p>
+          <span class="plate rear"><span class="num">dès 49 € / jour</span></span>
+        </article>
+        <article class="car">
+          <svg viewBox="0 0 200 76" role="img" aria-label="Silhouette d'utilitaire">
+            <path class="road" d="M4 70H196"/>
+            <path class="body" d="M10 58V12q0-4 6-4h110q8 0 14 6l20 20 22 6q8 2 8 10v8z"/>
+            <path class="glass" d="M122 18h6q4 0 8 4l12 12h-26zM112 8v50"/>
+            <circle class="wheel" cx="46" cy="58" r="12"/><circle class="hub" cx="46" cy="58" r="3"/>
+            <circle class="wheel" cx="154" cy="58" r="12"/><circle class="hub" cx="154" cy="58" r="3"/>
+          </svg>
+          <h3>Utilitaire</h3>
+          <p>Pour un déménagement ou un chantier. Permis B suffisant.</p>
+          <span class="plate rear"><span class="num">dès 59 € / jour</span></span>
+        </article>
+        <article class="car">
+          <svg viewBox="0 0 200 76" role="img" aria-label="Silhouette de berline">
+            <path class="road" d="M4 70H196"/>
+            <path class="body" d="M8 58V48q2-6 16-8l34-16q8-4 20-4h36q12 0 22 6l24 14 24 4q8 2 8 8v6z"/>
+            <path class="glass" d="M58 38l22-10h14v10zM102 28h14q8 0 16 4l10 6h-40z"/>
+            <circle class="wheel" cx="48" cy="58" r="11"/><circle class="hub" cx="48" cy="58" r="3"/>
+            <circle class="wheel" cx="156" cy="58" r="11"/><circle class="hub" cx="156" cy="58" r="3"/>
+          </svg>
+          <h3>Berline</h3>
+          <p>Finitions haut de gamme pour vos déplacements professionnels.</p>
+          <span class="plate rear"><span class="num">dès 79 € / jour</span></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="etapes" class="band-section">
+    <div class="wrap">
+      <div class="section-head"><h2>Comment ça marche</h2></div>
+      <ol class="steps">
+        <li><h3>Réservez</h3><p>Choisissez votre véhicule et vos dates, par téléphone ou à l'agence.</p></li>
+        <li><h3>Récupérez les clés</h3><p>Présentez votre permis et une pièce d'identité. L'état des lieux se fait ensemble.</p></li>
+        <li><h3>Restituez</h3><p>Ramenez le véhicule à l'agence avec le même niveau de carburant.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="questions">
+    <div class="wrap faq">
+      <div class="section-head">
+        <h2>Questions fréquentes</h2>
+        <p>Une autre question ? L'agence vous répond directement.</p>
+      </div>
+      <div>
+        <details>
+          <summary>Quels documents faut-il présenter ?</summary>
+          <p>Un permis de conduire en cours de validité, une pièce d'identité et un justificatif de domicile récent.</p>
+        </details>
+        <details>
+          <summary>Y a-t-il une caution ?</summary>
+          <p>Oui, un dépôt de garantie est demandé au départ et restitué au retour du véhicule. Son montant dépend de la catégorie.</p>
+        </details>
+        <details>
+          <summary>Le kilométrage est-il limité ?</summary>
+          <p>Chaque formule comprend un forfait kilométrique. Des forfaits étendus sont proposés pour les longs trajets.</p>
+        </details>
+        <details>
+          <summary>Puis-je ajouter un second conducteur ?</summary>
+          <p>Oui, sur présentation de son permis au moment de la remise des clés.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="band-section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Contact</h2>
+        <p>Appelez-nous ou passez à l'agence pour réserver.</p>
+      </div>
+      <div class="contact">
+        <div><span class="k">Téléphone</span><span class="v">00 00 00 00 00</span><span class="s">Du lundi au samedi</span></div>
+        <div><span class="k">E-mail</span><span class="v">contact@exemple.fr</span><span class="s">Réponse sous 24 h</span></div>
+        <div><span class="k">Agence</span><span class="v">Adresse à compléter</span><span class="s">9 h – 12 h 30 · 14 h – 18 h 30</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="plate"><span class="band">F</span><span class="num">?</span></span>
+    <span>© <span id="annee"></span> ? · Location de véhicules · Mentions légales</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var cat = document.getElementById('categorie');
+  var dep = document.getElementById('depart');
+  var ret = document.getElementById('retour');
+  var detail = document.getElementById('detail');
+  var total = document.getElementById('total');
+  var DAY = 86400000;
+
+  function iso(d) {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  var today = new Date();
+  dep.min = iso(today);
+  if (!dep.value) dep.value = iso(new Date(today.getTime() + DAY));
+  if (!ret.value) ret.value = iso(new Date(today.getTime() + 4 * DAY));
+
+  function update() {
+    var a = new Date(dep.value), b = new Date(ret.value);
+    if (isNaN(a) || isNaN(b)) { detail.textContent = 'Choisissez vos dates'; total.textContent = ''; return; }
+    if (b <= a) { detail.textContent = 'Le retour doit suivre le départ'; total.textContent = ''; return; }
+    var days = Math.round((b - a) / DAY);
+    var price = Number(cat.value);
+    detail.textContent = days + (days > 1 ? ' jours' : ' jour') + ' × ' + price + ' €';
+    total.textContent = (days * price).toLocaleString('fr-FR') + ' €';
+  }
+  [cat, dep, ret].forEach(function (el) { el.addEventListener('input', update); });
+  document.getElementById('devis').addEventListener('submit', function (e) { e.preventDefault(); });
+  document.getElementById('annee').textContent = today.getFullYear();
+  update();
+})();
+</script>
+</body>
+</html>
